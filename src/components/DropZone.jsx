@@ -91,12 +91,12 @@ export default function DropZone({
         </div>
       )}
 
-      {/* Placed Items Display Area */}
-      <div className="flex items-center justify-around z-10 w-full h-[65%] px-2 pt-2">
+      {/* Main Dropping Items Display Area (Takes full spacious center stage) */}
+      <div className="flex items-center justify-around z-10 w-full h-full px-2 sm:px-4 py-1">
         {items.map((item) => (
           <div
             key={item.id}
-            className="w-18 h-18 sm:w-22 sm:h-22 md:w-26 md:h-26 transition-transform hover:scale-110"
+            className="w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28 transition-transform hover:scale-110 flex items-center justify-center"
           >
             <FoodItem
               item={item}
@@ -113,16 +113,16 @@ export default function DropZone({
         )}
       </div>
 
-      {/* Decorative Corner Badge from materials */}
+      {/* Minimal Corner Badge tucked neatly in the corner */}
       <div
-        className={`absolute bottom-2 sm:bottom-3 pointer-events-none transition-transform duration-300 ${
-          badgePosition === 'bottom-left' ? 'left-2 sm:left-3' : 'right-2 sm:right-3'
+        className={`absolute pointer-events-none transition-transform duration-300 z-0 ${
+          badgePosition === 'bottom-left' ? 'bottom-2 left-2.5' : 'bottom-2 right-2.5'
         } ${isHovered ? 'scale-110' : ''}`}
       >
         <img
           src={badgeSrc}
-          alt={`${type} badge`}
-          className="w-18 h-18 sm:w-22 sm:h-22 md:w-26 md:h-26 object-contain opacity-95 filter drop-shadow-[0_2px_4px_rgba(0,0,0,0.3)]"
+          alt={`${type} category badge`}
+          className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 object-contain opacity-80 filter drop-shadow-[0_2px_4px_rgba(0,0,0,0.3)]"
         />
       </div>
     </div>
