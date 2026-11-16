@@ -76,12 +76,12 @@ export default function DropZone({
       onDragLeave={handleDragLeave}
       onDrop={handleDrop}
       onClick={handleClick}
-      className={`relative rounded-2xl md:rounded-3xl p-2 sm:p-3 transition-all duration-200 board-panel w-full h-full flex flex-col justify-between cursor-pointer ${clueBorder} ${className}`}
+      className={`relative rounded-3xl p-3 sm:p-4 transition-all duration-200 board-panel w-full h-full flex flex-col justify-between cursor-pointer ${clueBorder} ${className}`}
     >
       {/* Floating clue text badge ONLY shown when dragging over this box */}
       {isHovered && activeItem && (
         <div
-          className={`absolute -top-3.5 left-1/2 -translate-x-1/2 px-3 py-0.5 rounded-full text-xs font-black uppercase tracking-wider text-white shadow-lg pointer-events-none z-30 animate-bounce ${
+          className={`absolute -top-4 left-1/2 -translate-x-1/2 px-3.5 py-1 rounded-full text-xs sm:text-sm font-black uppercase tracking-wider text-white shadow-lg pointer-events-none z-30 animate-bounce ${
             activeItem.type === type
               ? 'bg-green-600 border-2 border-green-200 shadow-green-500/50'
               : 'bg-red-600 border-2 border-red-200 shadow-red-500/50'
@@ -92,11 +92,11 @@ export default function DropZone({
       )}
 
       {/* Placed Items Display Area */}
-      <div className="flex items-center justify-around z-10 w-full h-[65%] px-1 sm:px-2">
+      <div className="flex items-center justify-around z-10 w-full h-[65%] px-2 pt-2">
         {items.map((item) => (
           <div
             key={item.id}
-            className="w-14 h-14 sm:w-18 sm:h-18 md:w-22 md:h-22 lg:w-24 lg:h-24 transition-transform hover:scale-110"
+            className="w-18 h-18 sm:w-22 sm:h-22 md:w-26 md:h-26 transition-transform hover:scale-110"
           >
             <FoodItem
               item={item}
@@ -107,22 +107,22 @@ export default function DropZone({
         ))}
 
         {items.length === 0 && (
-          <div className="text-amber-200/50 text-xs sm:text-sm md:text-base font-bold text-center select-none pointer-events-none px-2">
-            {type === 'healthy' ? 'Drop Good Foods' : 'Drop Fast Foods'}
+          <div className="text-amber-200/50 text-sm sm:text-base md:text-lg font-bold text-center select-none pointer-events-none px-2">
+            {type === 'healthy' ? 'Drop Good Foods Here' : 'Drop Fast Foods Here'}
           </div>
         )}
       </div>
 
       {/* Decorative Corner Badge from materials */}
       <div
-        className={`absolute bottom-1 sm:bottom-2 pointer-events-none transition-transform duration-300 ${
-          badgePosition === 'bottom-left' ? 'left-1 sm:left-2' : 'right-1 sm:right-2'
+        className={`absolute bottom-2 sm:bottom-3 pointer-events-none transition-transform duration-300 ${
+          badgePosition === 'bottom-left' ? 'left-2 sm:left-3' : 'right-2 sm:right-3'
         } ${isHovered ? 'scale-110' : ''}`}
       >
         <img
           src={badgeSrc}
           alt={`${type} badge`}
-          className="w-14 h-14 sm:w-18 sm:h-18 md:w-22 md:h-22 object-contain opacity-95 filter drop-shadow-[0_2px_4px_rgba(0,0,0,0.3)]"
+          className="w-18 h-18 sm:w-22 sm:h-22 md:w-26 md:h-26 object-contain opacity-95 filter drop-shadow-[0_2px_4px_rgba(0,0,0,0.3)]"
         />
       </div>
     </div>
