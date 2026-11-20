@@ -19,60 +19,61 @@ export default function LevelCompleteModal({ stars = 3, coins = 40, onNext }) {
           className="w-full h-full object-contain pointer-events-none select-none"
         />
 
-        {/* --- Gold Stars placed over the 3 star silhouettes --- */}
-        {/* Left Star */}
-        {stars >= 2 && (
+        {/* --- Gold Stars placed over the dedicated spaces in sg.png --- */}
+
+        {/* Star 1 (Left Dedicated Space) */}
+        {stars >= 1 && (
           <div
             className="absolute z-20 pointer-events-none animate-star-pop"
             style={{
-              top: '8.5%',
-              left: '9%',
-              width: '28%',
+              top: '4.5%',
+              left: '4.2%',
+              width: '32.5%',
               animationDelay: '0.15s',
             }}
           >
             <img
               src="/assets/clean/star.png"
               alt="Star 1"
-              className="w-full h-auto object-contain -rotate-[16deg] drop-shadow-[0_4px_8px_rgba(0,0,0,0.4)]"
+              className="w-full h-auto object-contain -rotate-[12deg] drop-shadow-[0_4px_8px_rgba(0,0,0,0.35)]"
             />
           </div>
         )}
 
-        {/* Center Star (Main / Highest) */}
-        {stars >= 1 && (
+        {/* Star 2 (Center Dedicated Space - Main / Highest) */}
+        {stars >= 2 && (
           <div
             className="absolute z-30 pointer-events-none animate-star-pop"
             style={{
-              top: '0.5%',
-              left: '32%',
-              width: '36%',
-              animationDelay: '0.3s',
+              top: '-2.8%',
+              left: '28.5%',
+              width: '43%',
+              animationDelay: '0.35s',
             }}
           >
             <img
               src="/assets/clean/star.png"
               alt="Star 2"
-              className="w-full h-auto object-contain drop-shadow-[0_6px_12px_rgba(0,0,0,0.45)]"
+              className="w-full h-auto object-contain drop-shadow-[0_6px_12px_rgba(0,0,0,0.4)]"
             />
           </div>
         )}
 
-        {/* Right Star */}
+        {/* Star 3 (Right Dedicated Space) */}
         {stars >= 3 && (
           <div
             className="absolute z-20 pointer-events-none animate-star-pop"
             style={{
-              top: '8.5%',
-              right: '9%',
-              width: '28%',
-              animationDelay: '0.45s',
+              top: '4.5%',
+              right: '4.2%',
+              width: '32.5%',
+              animationDelay: '0.55s',
             }}
           >
             <img
               src="/assets/clean/star.png"
               alt="Star 3"
-              className="w-full h-auto object-contain rotate-[16deg] drop-shadow-[0_4px_8px_rgba(0,0,0,0.4)]"
+              className="w-full h-auto object-contain rotate-[12deg] drop-shadow-[0_4px_8px_rgba(0,0,0,0.35)]"
             />
           </div>
         )}
@@ -85,7 +86,7 @@ export default function LevelCompleteModal({ stars = 3, coins = 40, onNext }) {
             left: '46%',
             width: '28%',
             height: '11%',
-            textShadow: '0 3px 6px rgba(0,0,0,0.7), 0 0 10px rgba(0,0,0,0.5)',
+            textShadow: '0 3px 6px rgba(0,0,0,0.8), 0 0 10px rgba(0,0,0,0.5)',
             fontFamily: '"Lilita One", "Fredoka", cursive',
           }}
         >
@@ -107,7 +108,6 @@ export default function LevelCompleteModal({ stars = 3, coins = 40, onNext }) {
             height: '15%',
           }}
         >
-          {/* Subtle glossy pulse highlight overlay */}
           <span className="sr-only">NEXT</span>
         </button>
       </div>
