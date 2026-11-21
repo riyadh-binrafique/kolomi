@@ -1,64 +1,41 @@
-# Healthy vs Unhealthy - Kids Learning Game 🍎🍔
+# Kolomi - Educational Games
 
-A child-friendly interactive frontend educational game built with **React**, **Vite**, and **Tailwind CSS**, designed exactly according to the provided mockups and game logic.
+This repository contains educational games for children:
 
----
+## Game Folders
 
-## 🎮 Game Rules & Logic
+- [healthy-game/](file:///Users/riyadhmac/Documents/GitHub/kolomi/healthy-game): **Healthy vs Unhealthy**
+  - Interactive drag-and-drop / tap-to-move food sorting game.
+  - Features real-time live scoring, sound effects, confetti, and level completion modals with dedicated 3D stars.
+  - Frame aspect ratio: 1280×832.
 
-1. **Food Categories**:
-   - **Healthy Foods (Left Box)**: Mango, Apple, Watermelon (features the fruit basket with green checkmark badge).
-   - **Unhealthy Foods (Right Box)**: Burger, French Fries, Pizza (features the fast food with cancel sign badge).
-
-2. **Interactions**:
-   - **Drag & Drop**: Native drag-and-drop on desktop.
-   - **Touch Dragging**: Pointer-based dragging with touch-action controls for tablets and mobile devices.
-   - **Click / Tap to Move**: Tap any food item to select it (with animated golden glow and checkmark), then tap the target box to drop it!
-   - **Click / Tap to Remove**: Tap any placed food item inside a box to return it to the outer area.
-
-3. **Scoring & Modals**:
-   - **All 6 Correct**:
-     - ⭐⭐⭐ **3 Stars**
-     - 🪙 **40 Coins**
-     - Triggers **Level Complete Modal** with victory fanfare sound and celebratory confetti!
-   - **4–5 Correct**:
-     - ⭐⭐ **2 Stars**
-     - 🪙 **20 Coins**
-     - Triggers **Level Complete Modal**.
-   - **1–3 Correct**:
-     - ⭐ **1 Star**
-     - 🪙 **10 Coins**
-     - Triggers **Level Complete Modal**.
-   - **0 Correct**:
-     - Triggers **Retry Modal** ("You Failed :( Please Retry!") with a retry sound and animated restart button.
-
-4. **Audio & Sound Effects**:
-   - Built-in Web Audio API sound synthesis (zero external audio file dependencies):
-     - Pick up sound ("bloop")
-     - Drop chime ("ding")
-     - Return whoosh
-     - Victory fanfare
-     - Cartoon retry trombone
-     - Button click sound
-     - Sound Mute / Unmute toggle button in header.
+- [game-2/](file:///Users/riyadhmac/Documents/GitHub/kolomi/game-2): **Game 2 (Template / Workspace)**
+  - Standalone scaffold ready for the next game.
+  - Add assets into `game-2/materials/` or `game-2/public/` and build gameplay inside `game-2/src/`.
 
 ---
 
-## 🚀 How to Run
+## Running the Games
 
-### Development Server:
+### Option 1: From Repository Root
 ```bash
+# Run Healthy Game (Default)
+npm run dev
+
+# Or explicitly:
+npm run dev:healthy
+
+# Run Game 2
+npm run dev:game2
+```
+
+### Option 2: Inside Each Folder
+```bash
+# Healthy Game
+cd healthy-game
+npm run dev
+
+# Game 2
+cd game-2
 npm run dev
 ```
-Open [http://localhost:5173](http://localhost:5173) in your browser.
-
-### Production Build:
-```bash
-npm run build
-npm run preview
-```
-
----
-
-## 🎨 Asset Processing
-The original design assets in `materials/` have been processed, transparent-padded margins cropped, and optimized into `public/assets/clean/` for fast loading and crisp resolution across all devices.
