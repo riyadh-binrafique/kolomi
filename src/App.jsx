@@ -195,10 +195,10 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen w-full bg-[#0a0a0a] flex items-center justify-center p-2 sm:p-4 select-none overflow-x-auto">
+    <div className="min-h-screen w-full bg-black flex items-center justify-center select-none overflow-auto">
       {/* Game Stage Frame 1280x832 */}
       <div
-        className="relative w-full max-w-[1280px] min-w-[768px] aspect-[1280/832] rounded-2xl md:rounded-3xl overflow-hidden shadow-2xl border-4 md:border-8 border-amber-950 flex flex-col justify-between"
+        className="relative w-full max-w-[1280px] aspect-[1280/832] overflow-hidden flex flex-col justify-between"
         style={{
           backgroundImage: "url('/assets/clean/bg.png')",
           backgroundSize: '100% 100%',
