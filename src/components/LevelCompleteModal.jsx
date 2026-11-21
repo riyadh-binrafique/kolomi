@@ -10,8 +10,8 @@ export default function LevelCompleteModal({ stars = 3, coins = 40, onNext }) {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-pop-in select-none">
-      {/* Modal Dialog using reference asset: sg_panel.png */}
-      <div className="relative w-full max-w-[340px] sm:max-w-[390px] aspect-[786/950] drop-shadow-[0_20px_35px_rgba(0,0,0,0.6)]">
+      {/* Modal Dialog using reference asset: sg_panel.png (786 x 952) */}
+      <div className="relative w-full max-w-[340px] sm:max-w-[390px] aspect-[786/952] drop-shadow-[0_20px_35px_rgba(0,0,0,0.6)]">
         {/* Panel Artwork from materials/sg.png */}
         <img
           src="/assets/clean/sg_panel.png"
@@ -19,23 +19,23 @@ export default function LevelCompleteModal({ stars = 3, coins = 40, onNext }) {
           className="w-full h-full object-contain pointer-events-none select-none"
         />
 
-        {/* --- Gold Stars placed over the dedicated spaces in sg.png --- */}
+        {/* --- Gold Stars placed precisely over the dedicated silhouette spaces in sg.png --- */}
 
         {/* Star 1 (Left Dedicated Space) */}
         {stars >= 1 && (
           <div
             className="absolute z-20 pointer-events-none animate-star-pop"
             style={{
-              top: '4.5%',
-              left: '4.2%',
-              width: '32.5%',
+              top: '8.1%',
+              left: '7.6%',
+              width: '31.9%',
               animationDelay: '0.15s',
             }}
           >
             <img
               src="/assets/clean/star.png"
               alt="Star 1"
-              className="w-full h-auto object-contain -rotate-[12deg] drop-shadow-[0_4px_8px_rgba(0,0,0,0.35)]"
+              className="w-full h-auto object-contain drop-shadow-[0_4px_8px_rgba(0,0,0,0.35)]"
             />
           </div>
         )}
@@ -45,9 +45,9 @@ export default function LevelCompleteModal({ stars = 3, coins = 40, onNext }) {
           <div
             className="absolute z-30 pointer-events-none animate-star-pop"
             style={{
-              top: '-2.8%',
-              left: '28.5%',
-              width: '43%',
+              top: '0%',
+              left: '32.1%',
+              width: '41.0%',
               animationDelay: '0.35s',
             }}
           >
@@ -64,16 +64,16 @@ export default function LevelCompleteModal({ stars = 3, coins = 40, onNext }) {
           <div
             className="absolute z-20 pointer-events-none animate-star-pop"
             style={{
-              top: '4.5%',
-              right: '4.2%',
-              width: '32.5%',
+              top: '9.0%',
+              left: '66.7%',
+              width: '31.9%',
               animationDelay: '0.55s',
             }}
           >
             <img
               src="/assets/clean/star.png"
               alt="Star 3"
-              className="w-full h-auto object-contain rotate-[12deg] drop-shadow-[0_4px_8px_rgba(0,0,0,0.35)]"
+              className="w-full h-auto object-contain drop-shadow-[0_4px_8px_rgba(0,0,0,0.35)]"
             />
           </div>
         )}
@@ -82,8 +82,8 @@ export default function LevelCompleteModal({ stars = 3, coins = 40, onNext }) {
         <div
           className="absolute z-20 flex items-center justify-center font-black text-white text-2xl sm:text-3xl md:text-4xl tracking-wider select-none pointer-events-none"
           style={{
-            top: '52%',
-            left: '46%',
+            top: '52.5%',
+            left: '45%',
             width: '28%',
             height: '11%',
             textShadow: '0 3px 6px rgba(0,0,0,0.8), 0 0 10px rgba(0,0,0,0.5)',
@@ -102,10 +102,10 @@ export default function LevelCompleteModal({ stars = 3, coins = 40, onNext }) {
           title="Next Level"
           className="absolute z-30 rounded-2xl sm:rounded-3xl cursor-pointer transition-transform duration-150 transform hover:scale-105 active:scale-95 focus:outline-none"
           style={{
-            bottom: '2.5%',
-            left: '23%',
-            width: '54%',
-            height: '15%',
+            top: '76.2%',
+            left: '25.5%',
+            width: '49.6%',
+            height: '23.8%',
           }}
         >
           <span className="sr-only">NEXT</span>
