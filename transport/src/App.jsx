@@ -1,18 +1,398 @@
-import React from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
+import ScoreBoard from './components/ScoreBoard';
+import VehicleItem from './components/VehicleItem';
+import EnvironmentZone from './components/EnvironmentZone';
+import LevelCompleteModal from './components/LevelCompleteModal';
+import RetryModal from './components/RetryModal';
+import ExitModal from './components/ExitModal';
+import { sounds } from './utils/sound';
+import { Volume2, VolumeX } from 'lucide-react';
+
+const INITIAL_VEHICLES = [
+  {
+    id: 'helicopter',
+    name: 'Helicopter',
+    type: 'air',
+    image: '/assets/clean/helicopter.png',
+    unplacedStyle: { left: '4.5%', top: '44%', width: '10%' },
+    placedPosStyle: {
+      air: { left: '20%', top: '10%', width: '15.5%' },
+      river: { left: '20%', top: '42%', width: '15.5%' },
+      road: { left: '20%', top: '74%', width: '15.5%' },
+      default: { left: '20%', top: '10%', width: '15.5%' },
+    },
+  },
+  {
+    id: 'car',
+    name: 'Car',
+    type: 'road',
+    image: '/assets/clean/car.png',
+    unplacedStyle: { left: '4.5%', top: '68%', width: '11.5%' },
+    placedPosStyle: {
+      road: { left: '33%', top: '76%', width: '18%' },
+      air: { left: '33%', top: '10%', width: '18%' },
+      river: { left: '33%', top: '42%', width: '18%' },
+      default: { left: '33%', top: '76%', width: '18%' },
+    },
+  },
+  {
+    id: 'ship',
+    name: 'Ship',
+    type: 'river',
+    image: '/assets/clean/ship.png',
+    unplacedStyle: { right: '4.5%', top: '23%', width: '10%' },
+    placedPosStyle: {
+      river: { left: '23%', top: '42%', width: '15.5%' },
+      air: { left: '23%', top: '10%', width: '15.5%' },
+      road: { left: '23%', top: '74%', width: '15.5%' },
+      default: { left: '23%', top: '42%', width: '15.5%' },
+    },
+  },
+  {
+    id: 'plane',
+    name: 'Airplane',
+    type: 'air',
+    image: '/assets/clean/plane.png',
+    unplacedStyle: { right: '4.5%', top: '43%', width: '10%' },
+    placedPosStyle: {
+      air: { left: '48%', top: '6%', width: '17.5%' },
+      river: { left: '48%', top: '42%', width: '17.5%' },
+      road: { left: '48%', top: '74%', width: '17.5%' },
+      default: { left: '48%', top: '6%', width: '17.5%' },
+    },
+  },
+  {
+    id: 'bike',
+    name: 'Motorcycle',
+    type: 'road',
+    image: '/assets/clean/bike.png',
+    unplacedStyle: { right: '4.5%', top: '66%', width: '9.5%' },
+    placedPosStyle: {
+      road: { left: '10%', top: '73%', width: '14.5%' },
+      air: { left: '10%', top: '10%', width: '14.5%' },
+      river: { left: '10%', top: '42%', width: '14.5%' },
+      default: { left: '10%', top: '73%', width: '14.5%' },
+    },
+  },
+];
 
 export default function App() {
+  // itemLocations: { [id]: 'air' | 'river' | 'road' | null }
+  const [itemLocations, setItemLocations] = useState(() => {
+    const locs = {};
+    INITIAL_VEHICLES.forEach((item) => {
+      locs[item.id] = null;
+    });
+    return locs;
+  });
+
+  const [selectedItemId, setSelectedItemId] = useState(null);
+  const [draggedItem, setDraggedItem] = useState(null);
+  const [touchHoverZone, setTouchHoverZone] = useState(null);
+
+  const [gameState, setGameState] = useState('playing'); // 'playing' | 'complete' | 'retry'
+  const [showExitModal, setShowExitModal] = useState(false);
+  const [resultStars, setResultStars] = useState(3);
+  const [resultCoins, setResultCoins] = useState(40);
+  const [isMuted, setIsMuted] = useState(sounds.isMuted);
+
+  const handleToggleSound = () => {
+    const muted = sounds.toggleMute();
+    setIsMuted(muted);
+  };
+
+  // Placed items in respective zones
+  const totalPlaced = Object.values(itemLocations).filter(Boolean).length;
+
+  // Active item currently being interacted with (dragged or clicked/selected)
+  const activeItem =
+    draggedItem || INITIAL_VEHICLES.find((i) => i.id === selectedItemId) || null;
+
+  // --- Real-time Dynamic Counting of Right, Wrong, and Score! ---
+  const { rightCount, wrongCount, liveScore } = useMemo(() => {
+    let right = 0;
+    let wrong = 0;
+
+    INITIAL_VEHICLES.forEach((item) => {
+      const loc = itemLocations[item.id];
+      if (loc) {
+        if (loc === item.type) {
+          right++;
+        } else {
+          wrong++;
+        }
+      }
+    });
+
+    const score = right * 10;
+    return { rightCount: right, wrongCount: wrong, liveScore: score };
+  }, [itemLocations]);
+
+  // Handle dropping / placing an item into a zone
+  const handleDropItem = (itemId, targetZone) => {
+    const vehicle = INITIAL_VEHICLES.find((i) => i.id === itemId);
+
+    // Audio clue: cheerful chime if correct, funny "oops" if wrong
+    if (vehicle && vehicle.type === targetZone) {
+      sounds.playDrop();
+    } else {
+      sounds.playOops();
+    }
+
+    setItemLocations((prev) => ({
+      ...prev,
+      [itemId]: targetZone,
+    }));
+    setSelectedItemId(null);
+    setDraggedItem(null);
+    setTouchHoverZone(null);
+  };
+
+  // Handle returning an item back to outer scattered area
+  const handleRemoveItem = (itemId) => {
+    sounds.playPick();
+    setItemLocations((prev) => ({
+      ...prev,
+      [itemId]: null,
+    }));
+    setSelectedItemId(null);
+    setDraggedItem(null);
+  };
+
+  // Toggle selection on item click
+  const handleSelectItem = (itemId) => {
+    setSelectedItemId((prev) => (prev === itemId ? null : itemId));
+  };
+
+  // --- Automatic Modal Trigger When All 5 Vehicles are Placed ---
+  useEffect(() => {
+    if (totalPlaced === INITIAL_VEHICLES.length && gameState === 'playing') {
+      const timer = setTimeout(() => {
+        if (rightCount === 5) {
+          setResultStars(3);
+          setResultCoins(40);
+          setGameState('complete');
+        } else if (rightCount >= 3) {
+          setResultStars(2);
+          setResultCoins(20);
+          setGameState('complete');
+        } else if (rightCount >= 1) {
+          setResultStars(1);
+          setResultCoins(10);
+          setGameState('complete');
+        } else {
+          setResultStars(0);
+          setResultCoins(0);
+          setGameState('retry');
+        }
+      }, 900);
+
+      return () => clearTimeout(timer);
+    }
+  }, [totalPlaced, rightCount, gameState]);
+
+  // Reset / restart game
+  const handleResetGame = () => {
+    const locs = {};
+    INITIAL_VEHICLES.forEach((item) => {
+      locs[item.id] = null;
+    });
+    setItemLocations(locs);
+    setSelectedItemId(null);
+    setDraggedItem(null);
+    setTouchHoverZone(null);
+    setGameState('playing');
+    setShowExitModal(false);
+  };
+
   return (
-    <div className="min-h-screen w-full bg-slate-900 flex items-center justify-center p-4">
-      <div className="relative w-full max-w-[1280px] aspect-[1280/832] bg-gradient-to-br from-indigo-900 via-purple-900 to-slate-950 rounded-2xl flex flex-col items-center justify-center text-center p-8 border border-white/10 shadow-2xl">
-        <div className="inline-block px-6 py-2 rounded-full bg-indigo-500/30 text-indigo-300 font-bold text-sm tracking-wide uppercase mb-6 border border-indigo-400/30">
-          Kolomi Games
+    <div className="min-h-screen w-full bg-black flex items-center justify-center select-none overflow-auto">
+      {/* Game Stage Frame 1280x832 using PzlGameBg.jpg as the full background */}
+      <div
+        className="relative w-full max-w-[1280px] aspect-[1280/832] overflow-hidden select-none"
+        style={{
+          backgroundImage: "url('/assets/clean/pzlgamebg.jpg')",
+          backgroundSize: '100% 100%',
+          backgroundRepeat: 'no-repeat',
+          backgroundPosition: 'center',
+        }}
+      >
+        {/* Top Sound Toggle */}
+        <div className="absolute top-[3%] left-[17%] z-40">
+          <button
+            onClick={handleToggleSound}
+            title={isMuted ? 'Unmute Sound' : 'Mute Sound'}
+            className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-amber-400 hover:bg-amber-300 text-amber-950 flex items-center justify-center border-2 border-white shadow transition transform active:scale-90 cursor-pointer"
+          >
+            {isMuted ? (
+              <VolumeX className="w-5 h-5 sm:w-6 sm:h-6" />
+            ) : (
+              <Volume2 className="w-5 h-5 sm:w-6 sm:h-6 text-amber-950" />
+            )}
+          </button>
         </div>
-        <h1 className="text-4xl md:text-6xl font-black text-white font-lilita drop-shadow-lg mb-4">
-          Transport Game Workspace
-        </h1>
-        <p className="text-base md:text-xl text-white/80 max-w-lg mb-8">
-          This standalone folder is ready for your next educational game. Add your assets into <code className="bg-black/40 px-2 py-1 rounded text-amber-300">materials/</code> and start building in <code className="bg-black/40 px-2 py-1 rounded text-amber-300">src/</code>!
-        </p>
+
+        {/* Top Center Title Banner: "Match My Ride" */}
+        <div className="absolute top-[3.5%] left-1/2 -translate-x-1/2 z-30 text-center">
+          <div
+            className="px-8 sm:px-12 py-2 sm:py-2.5 rounded-2xl bg-[#070b28]/90 border border-indigo-700/60 text-white font-extrabold text-base sm:text-xl md:text-2xl tracking-wide shadow-[0_4px_16px_rgba(0,0,0,0.6)] select-none whitespace-nowrap"
+            style={{ fontFamily: '"Fredoka", "Lilita One", cursive' }}
+          >
+            Match My Ride
+          </div>
+        </div>
+
+        {/* Top Right Exit Button: Exit.png */}
+        <div className="absolute top-[2.5%] right-[2.5%] z-40">
+          <button
+            onClick={() => {
+              sounds.playClick();
+              setShowExitModal(true);
+            }}
+            title="Exit / Restart Game"
+            className="transition-transform duration-200 hover:scale-105 active:scale-95 focus:outline-none cursor-pointer"
+          >
+            <img
+              src="/assets/clean/exit.png"
+              alt="Exit"
+              className="w-11 h-9 sm:w-14 sm:h-11 object-contain filter drop-shadow-[0_3px_5px_rgba(0,0,0,0.3)]"
+            />
+          </button>
+        </div>
+
+        {/* Top Left ScoreBoard Card */}
+        <div
+          className="absolute z-30"
+          style={{ left: '2.5%', top: '2.5%', width: '13%', minWidth: '130px' }}
+        >
+          <ScoreBoard
+            rightCount={rightCount}
+            wrongCount={wrongCount}
+            score={liveScore}
+          />
+        </div>
+
+        {/* --- Drop Target Zones Over the Landscape Card inside PzlGameBg.jpg --- */}
+        <div
+          className="absolute z-20 pointer-events-auto rounded-3xl overflow-hidden"
+          style={{
+            left: '21.8%',
+            top: '17.6%',
+            width: '59.9%',
+            height: '65.6%',
+          }}
+        >
+          {/* 1. AIR / SKY Zone (Top 38% of the central card) */}
+          <EnvironmentZone
+            type="air"
+            title="Air"
+            onDropItem={handleDropItem}
+            activeItem={activeItem}
+            isTouchHovered={touchHoverZone === 'air'}
+            style={{ top: '0%', height: '38%', left: '0%', width: '100%' }}
+            className="absolute z-10 rounded-t-3xl"
+          />
+
+          {/* 2. RIVER / WATER Zone (Middle 28% of the central card) */}
+          <EnvironmentZone
+            type="river"
+            title="River"
+            onDropItem={handleDropItem}
+            activeItem={activeItem}
+            isTouchHovered={touchHoverZone === 'river'}
+            style={{ top: '38%', height: '28%', left: '0%', width: '100%' }}
+            className="absolute z-10"
+          />
+
+          {/* 3. ROAD / BRIDGE Zone (Bottom 34% of the central card) */}
+          <EnvironmentZone
+            type="road"
+            title="Road"
+            onDropItem={handleDropItem}
+            activeItem={activeItem}
+            isTouchHovered={touchHoverZone === 'road'}
+            style={{ top: '66%', height: '34%', left: '0%', width: '100%' }}
+            className="absolute z-10 rounded-b-3xl"
+          />
+
+          {/* --- Placed Vehicles Inside the Landscape Card --- */}
+          <div className="absolute inset-0 pointer-events-none z-20">
+            {INITIAL_VEHICLES.map((vehicle) => {
+              const loc = itemLocations[vehicle.id];
+              if (!loc) return null;
+
+              const posStyle =
+                vehicle.placedPosStyle[loc] || vehicle.placedPosStyle.default;
+              return (
+                <div
+                  key={vehicle.id}
+                  className="absolute pointer-events-auto transition-all duration-300 transform hover:scale-105"
+                  style={posStyle}
+                >
+                  <VehicleItem
+                    item={vehicle}
+                    isPlaced={true}
+                    onRemove={handleRemoveItem}
+                    className="w-full h-full"
+                  />
+                </div>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* --- Floating Unplaced Vehicles (Outside on Left & Right) --- */}
+        {INITIAL_VEHICLES.map((vehicle) => {
+          const isPlaced = itemLocations[vehicle.id] !== null;
+          if (isPlaced) return null;
+
+          return (
+            <div
+              key={vehicle.id}
+              className="absolute z-30"
+              style={vehicle.unplacedStyle}
+            >
+              <VehicleItem
+                item={vehicle}
+                isPlaced={false}
+                isSelected={selectedItemId === vehicle.id}
+                onSelect={handleSelectItem}
+                onDragStart={(item) => {
+                  setDraggedItem(item);
+                  setSelectedItemId(item.id);
+                }}
+                onDragEnd={() => {
+                  setDraggedItem(null);
+                }}
+              />
+            </div>
+          );
+        })}
+
+        {/* Footer instruction text */}
+        <div className="absolute bottom-2 left-0 right-0 text-center text-xs text-white/50 pointer-events-none select-none">
+          Drag vehicles into Air, River, or Road • Tap to select & place
+        </div>
+
+        {/* --- Victory / Level Complete Modal --- */}
+        {gameState === 'complete' && (
+          <LevelCompleteModal
+            stars={resultStars}
+            coins={resultCoins}
+            onNext={handleResetGame}
+          />
+        )}
+
+        {/* --- Retry Modal --- */}
+        {gameState === 'retry' && <RetryModal onRetry={handleResetGame} />}
+
+        {/* --- Exit / Restart Modal --- */}
+        {showExitModal && (
+          <ExitModal
+            onConfirmRestart={handleResetGame}
+            onClose={() => setShowExitModal(false)}
+          />
+        )}
       </div>
     </div>
   );
