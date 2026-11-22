@@ -106,12 +106,12 @@ export default function App() {
     if (!document.fullscreenElement) {
       document.documentElement.requestFullscreen().then(() => {
         setIsFullscreen(true);
-      }).catch(() => {});
+      }).catch(() => { });
     } else {
       if (document.exitFullscreen) {
         document.exitFullscreen().then(() => {
           setIsFullscreen(false);
-        }).catch(() => {});
+        }).catch(() => { });
       }
     }
   };
@@ -313,8 +313,9 @@ export default function App() {
         </div>
 
         {/* --- The Holding Place (3 Parts for holding 3 types of vehicles) --- */}
+        {/* NOTE: NO overflow-hidden so Road zone badge is never clipped */}
         <div
-          className="absolute z-20 pointer-events-auto rounded-3xl overflow-hidden shadow-[0_10px_35px_rgba(0,0,0,0.4)]"
+          className="absolute z-20 pointer-events-auto rounded-3xl"
           style={{
             left: '21.82%',
             top: '16.73%',
@@ -322,46 +323,52 @@ export default function App() {
             height: '66.91%',
           }}
         >
-          {/* Part 1 (Upper): Air Holding Place (holds air vehicles: plane & helicopter) */}
+          {/* Part 1 (Upper 47%): Sky — holds Plane & Helicopter */}
           <EnvironmentZone
             type="air"
-            title="Air"
-            icon="☁️"
+            title="Sky"
+            icon=""
             items={airItems}
             onDropItem={handleDropItem}
             onRemoveItem={handleRemoveItem}
             activeItem={activeItem}
             isTouchHovered={touchHoverZone === 'air'}
-            style={{ top: '0%', height: '36.7%', left: '0%', width: '100%' }}
-            className="absolute z-10 rounded-t-3xl"
+            style={{ top: '0%', height: '47%', left: '0%', width: '100%' }}
+            className="absolute z-10 rounded-t-2xl"
+            borderColor="#e53e3e"
+            labelColor="#ef4444"
           />
 
-          {/* Part 2 (Middle): River Holding Place (holds river vehicles: ship) */}
+          {/* Part 2 (Middle 27%): Water — holds Ship */}
           <EnvironmentZone
             type="river"
-            title="River"
-            icon="🌊"
+            title="Water"
+            icon=""
             items={riverItems}
             onDropItem={handleDropItem}
             onRemoveItem={handleRemoveItem}
             activeItem={activeItem}
             isTouchHovered={touchHoverZone === 'river'}
-            style={{ top: '36.7%', height: '29.8%', left: '0%', width: '100%' }}
+            style={{ top: '47%', height: '27%', left: '0%', width: '100%' }}
             className="absolute z-10"
+            borderColor="#18181b"
+            labelColor="#ef4444"
           />
 
-          {/* Part 3 (Lower): Road Holding Place (holds road vehicles: bike & car) */}
+          {/* Part 3 (Lower 26%): Road — holds Bike & Car */}
           <EnvironmentZone
             type="road"
-            title="Road"
-            icon="🛣️"
+            title="road"
+            icon=""
             items={roadItems}
             onDropItem={handleDropItem}
             onRemoveItem={handleRemoveItem}
             activeItem={activeItem}
             isTouchHovered={touchHoverZone === 'road'}
-            style={{ top: '66.5%', height: '33.5%', left: '0%', width: '100%' }}
-            className="absolute z-10 rounded-b-3xl"
+            style={{ top: '74%', height: '26%', left: '0%', width: '100%' }}
+            className="absolute z-10 rounded-b-2xl"
+            borderColor="#22c55e"
+            labelColor="#ef4444"
           />
         </div>
 
