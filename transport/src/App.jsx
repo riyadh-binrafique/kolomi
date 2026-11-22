@@ -125,7 +125,10 @@ export default function App() {
   }, []);
 
   // Placed items in respective zones
-  const totalPlaced = Object.values(itemLocations).filter(Boolean).length;
+  const airItems = INITIAL_VEHICLES.filter((item) => itemLocations[item.id] === 'air');
+  const riverItems = INITIAL_VEHICLES.filter((item) => itemLocations[item.id] === 'river');
+  const roadItems = INITIAL_VEHICLES.filter((item) => itemLocations[item.id] === 'road');
+  const totalPlaced = airItems.length + riverItems.length + roadItems.length;
 
   // Active item currently being interacted with (dragged or clicked/selected)
   const activeItem =
@@ -309,7 +312,7 @@ export default function App() {
           />
         </div>
 
-        {/* --- Drop Target Zones Over the Central Landscape Card inside PzlGameBg.jpg --- */}
+        {/* --- The Holding Place (3 Parts for holding 3 types of vehicles) --- */}
         <div
           className="absolute z-20 pointer-events-auto rounded-3xl overflow-hidden"
           style={{
@@ -319,63 +322,44 @@ export default function App() {
             height: '65.6%',
           }}
         >
-          {/* 1. UPPER PART: AIR FOR PLANE & HELICOPTER (Top 37% of the card) */}
+          {/* Part 1 (Upper): Air Holding Place (holds plane & helicopter) */}
           <EnvironmentZone
             type="air"
             title="Air"
+            items={airItems}
             onDropItem={handleDropItem}
+            onRemoveItem={handleRemoveItem}
             activeItem={activeItem}
             isTouchHovered={touchHoverZone === 'air'}
             style={{ top: '0%', height: '37%', left: '0%', width: '100%' }}
             className="absolute z-10 rounded-t-3xl"
           />
 
-          {/* 2. MIDDLE PART: RIVER FOR SHIP (Middle 28% of the card) */}
+          {/* Part 2 (Middle): River Holding Place (holds ship) */}
           <EnvironmentZone
             type="river"
             title="River"
+            items={riverItems}
             onDropItem={handleDropItem}
+            onRemoveItem={handleRemoveItem}
             activeItem={activeItem}
             isTouchHovered={touchHoverZone === 'river'}
             style={{ top: '37%', height: '28%', left: '0%', width: '100%' }}
             className="absolute z-10"
           />
 
-          {/* 3. LOWER PART: ROAD FOR BIKE AND CARS (Bottom 35% of the card) */}
+          {/* Part 3 (Lower): Road Holding Place (holds bike & car) */}
           <EnvironmentZone
             type="road"
             title="Road"
+            items={roadItems}
             onDropItem={handleDropItem}
+            onRemoveItem={handleRemoveItem}
             activeItem={activeItem}
             isTouchHovered={touchHoverZone === 'road'}
             style={{ top: '65%', height: '35%', left: '0%', width: '100%' }}
             className="absolute z-10 rounded-b-3xl"
           />
-
-          {/* --- Placed Vehicles Inside the Landscape Card --- */}
-          <div className="absolute inset-0 pointer-events-none z-20">
-            {INITIAL_VEHICLES.map((vehicle) => {
-              const loc = itemLocations[vehicle.id];
-              if (!loc) return null;
-
-              const posStyle =
-                vehicle.placedPosStyle[loc] || vehicle.placedPosStyle.default;
-              return (
-                <div
-                  key={vehicle.id}
-                  className="absolute pointer-events-auto transition-all duration-300 transform hover:scale-105"
-                  style={posStyle}
-                >
-                  <VehicleItem
-                    item={vehicle}
-                    isPlaced={true}
-                    onRemove={handleRemoveItem}
-                    className="w-full h-full"
-                  />
-                </div>
-              );
-            })}
-          </div>
         </div>
 
         {/* --- Floating Unplaced Vehicles (Outside on Left & Right) --- */}
