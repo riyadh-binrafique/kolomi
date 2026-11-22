@@ -314,50 +314,53 @@ export default function App() {
 
         {/* --- The Holding Place (3 Parts for holding 3 types of vehicles) --- */}
         <div
-          className="absolute z-20 pointer-events-auto rounded-3xl overflow-hidden"
+          className="absolute z-20 pointer-events-auto rounded-3xl overflow-hidden shadow-[0_10px_35px_rgba(0,0,0,0.4)]"
           style={{
-            left: '21.8%',
-            top: '17.6%',
-            width: '59.9%',
-            height: '65.6%',
+            left: '21.82%',
+            top: '16.73%',
+            width: '55.87%',
+            height: '66.91%',
           }}
         >
-          {/* Part 1 (Upper): Air Holding Place (holds plane & helicopter) */}
+          {/* Part 1 (Upper): Air Holding Place (holds air vehicles: plane & helicopter) */}
           <EnvironmentZone
             type="air"
             title="Air"
+            icon="☁️"
             items={airItems}
             onDropItem={handleDropItem}
             onRemoveItem={handleRemoveItem}
             activeItem={activeItem}
             isTouchHovered={touchHoverZone === 'air'}
-            style={{ top: '0%', height: '37%', left: '0%', width: '100%' }}
+            style={{ top: '0%', height: '36.7%', left: '0%', width: '100%' }}
             className="absolute z-10 rounded-t-3xl"
           />
 
-          {/* Part 2 (Middle): River Holding Place (holds ship) */}
+          {/* Part 2 (Middle): River Holding Place (holds river vehicles: ship) */}
           <EnvironmentZone
             type="river"
             title="River"
+            icon="🌊"
             items={riverItems}
             onDropItem={handleDropItem}
             onRemoveItem={handleRemoveItem}
             activeItem={activeItem}
             isTouchHovered={touchHoverZone === 'river'}
-            style={{ top: '37%', height: '28%', left: '0%', width: '100%' }}
+            style={{ top: '36.7%', height: '29.8%', left: '0%', width: '100%' }}
             className="absolute z-10"
           />
 
-          {/* Part 3 (Lower): Road Holding Place (holds bike & car) */}
+          {/* Part 3 (Lower): Road Holding Place (holds road vehicles: bike & car) */}
           <EnvironmentZone
             type="road"
             title="Road"
+            icon="🛣️"
             items={roadItems}
             onDropItem={handleDropItem}
             onRemoveItem={handleRemoveItem}
             activeItem={activeItem}
             isTouchHovered={touchHoverZone === 'road'}
-            style={{ top: '65%', height: '35%', left: '0%', width: '100%' }}
+            style={{ top: '66.5%', height: '33.5%', left: '0%', width: '100%' }}
             className="absolute z-10 rounded-b-3xl"
           />
         </div>

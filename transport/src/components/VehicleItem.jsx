@@ -14,8 +14,7 @@ export default function VehicleItem({
   className = '',
   style = {},
 }) {
-  const touchStartPos = useRef({ x: 0, y: 0 });
-  const hasMoved = useRef(false);
+  const isDraggingTouch = useRef(false);
 
   const handleClick = (e) => {
     e.stopPropagation();
@@ -29,8 +28,10 @@ export default function VehicleItem({
 
   const handleDragStart = (e) => {
     sounds.playPick();
-    e.dataTransfer.setData('text/plain', item.id);
-    e.dataTransfer.effectAllowed = 'move';
+    if (e.dataTransfer) {
+      e.dataTransfer.setData('text/plain', item.id);
+      e.dataTransfer.effectAllowed = 'move';
+    }
     onDragStart?.(item);
   };
 
@@ -38,36 +39,37 @@ export default function VehicleItem({
     onDragEnd?.();
   };
 
-  // Touch Support (for iPad / Tablet / Mobile)
-  const handleTouchStart = (e) => {
-    const touch = e.touches[0];
-    touchStartPos.current = { x: touch.clientX, y: touch.clientY };
-    hasMoved.current = false;
+  // Touch handlers for iPad / Mobile
+  const handleTouchStart = () => {
+    sounds.playPick();
+    isDraggingTouch.current = false;
     onDragStart?.(item);
   };
 
   const handleTouchMove = (e) => {
+    isDraggingTouch.current = true;
     const touch = e.touches[0];
-    const dx = Math.abs(touch.clientX - touchStartPos.current.x);
-    const dy = Math.abs(touch.clientY - touchStartPos.current.y);
-    if (dx > 8 || dy > 8) {
-      hasMoved.current = true;
-    }
-    const elem = document.elementFromPoint(touch.clientX, touch.clientY);
-    const zoneElem = elem?.closest('[data-zone]');
+    const elem = e.currentTarget;
+    elem.style.pointerEvents = 'none';
+    const under = document.elementFromPoint(touch.clientX, touch.clientY);
+    elem.style.pointerEvents = '';
+    const zoneElem = under?.closest('[data-zone]');
     const zone = zoneElem?.getAttribute('data-zone') || null;
     onTouchHover?.(zone);
   };
 
   const handleTouchEnd = (e) => {
     const touch = e.changedTouches[0];
-    const elem = document.elementFromPoint(touch.clientX, touch.clientY);
-    const zoneElem = elem?.closest('[data-zone]');
+    const elem = e.currentTarget;
+    elem.style.pointerEvents = 'none';
+    const under = document.elementFromPoint(touch.clientX, touch.clientY);
+    elem.style.pointerEvents = '';
+    const zoneElem = under?.closest('[data-zone]');
     const zone = zoneElem?.getAttribute('data-zone') || null;
 
-    if (hasMoved.current && zone) {
+    if (isDraggingTouch.current && zone) {
       onDropOntoZone?.(item.id, zone);
-    } else if (!hasMoved.current) {
+    } else if (!isDraggingTouch.current) {
       handleClick(e);
     }
     onTouchHover?.(null);
@@ -76,7 +78,7 @@ export default function VehicleItem({
 
   return (
     <div
-      draggable
+      draggable={!isPlaced}
       onDragStart={handleDragStart}
       onDragEnd={handleDragEnd}
       onTouchStart={handleTouchStart}
@@ -85,7 +87,7 @@ export default function VehicleItem({
       onClick={handleClick}
       title={`${item.name} (${isPlaced ? 'Click to remove' : 'Drag or click to place'})`}
       style={style}
-      className={`group cursor-grab active:cursor-grabbing select-none transition-transform duration-200 transform hover:scale-108 touch-none ${
+      className={`group cursor-grab active:cursor-grabbing select-none transition-transform duration-200 transform hover:scale-108 ${
         isSelected
           ? 'scale-110 drop-shadow-[0_0_18px_rgba(250,204,21,0.95)] ring-4 ring-yellow-400 rounded-2xl animate-pulse'
           : 'drop-shadow-[0_6px_12px_rgba(0,0,0,0.45)]'
@@ -94,6 +96,7 @@ export default function VehicleItem({
       <img
         src={item.image}
         alt={item.name}
+        draggable={false}
         className="w-full h-full object-contain pointer-events-none select-none transition-transform duration-200"
       />
       {isSelected && (
