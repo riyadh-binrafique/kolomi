@@ -319,39 +319,36 @@ export default function App() {
             height: '65.6%',
           }}
         >
-          {/* 1. TOP ZONE: AIR / SKY (Top 36% of the central card) */}
+          {/* 1. UPPER PART: AIR FOR PLANE & HELICOPTER (Top 37% of the card) */}
           <EnvironmentZone
             type="air"
             title="Air"
-            icon="☁️"
             onDropItem={handleDropItem}
             activeItem={activeItem}
             isTouchHovered={touchHoverZone === 'air'}
-            style={{ top: '0%', height: '36%', left: '0%', width: '100%' }}
+            style={{ top: '0%', height: '37%', left: '0%', width: '100%' }}
             className="absolute z-10 rounded-t-3xl"
           />
 
-          {/* 2. MIDDLE ZONE: RIVER (Middle 25% of the central card) */}
+          {/* 2. MIDDLE PART: RIVER FOR SHIP (Middle 28% of the card) */}
           <EnvironmentZone
             type="river"
             title="River"
-            icon="🌊"
             onDropItem={handleDropItem}
             activeItem={activeItem}
             isTouchHovered={touchHoverZone === 'river'}
-            style={{ top: '36%', height: '25%', left: '0%', width: '100%' }}
+            style={{ top: '37%', height: '28%', left: '0%', width: '100%' }}
             className="absolute z-10"
           />
 
-          {/* 3. BOTTOM ZONE: ROAD (Bottom 39% of the central card) */}
+          {/* 3. LOWER PART: ROAD FOR BIKE AND CARS (Bottom 35% of the card) */}
           <EnvironmentZone
             type="road"
             title="Road"
-            icon="🛣️"
             onDropItem={handleDropItem}
             activeItem={activeItem}
             isTouchHovered={touchHoverZone === 'road'}
-            style={{ top: '61%', height: '39%', left: '0%', width: '100%' }}
+            style={{ top: '65%', height: '35%', left: '0%', width: '100%' }}
             className="absolute z-10 rounded-b-3xl"
           />
 
@@ -403,6 +400,12 @@ export default function App() {
                 }}
                 onDragEnd={() => {
                   setDraggedItem(null);
+                }}
+                onTouchHover={(zone) => {
+                  setTouchHoverZone(zone);
+                }}
+                onDropOntoZone={(itemId, zone) => {
+                  handleDropItem(itemId, zone);
                 }}
               />
             </div>
