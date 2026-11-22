@@ -6,7 +6,7 @@ import LevelCompleteModal from './components/LevelCompleteModal';
 import RetryModal from './components/RetryModal';
 import ExitModal from './components/ExitModal';
 import { sounds } from './utils/sound';
-import { Volume2, VolumeX } from 'lucide-react';
+import { Volume2, VolumeX, Maximize2, Minimize2 } from 'lucide-react';
 
 const INITIAL_VEHICLES = [
   {
@@ -95,11 +95,34 @@ export default function App() {
   const [resultStars, setResultStars] = useState(3);
   const [resultCoins, setResultCoins] = useState(40);
   const [isMuted, setIsMuted] = useState(sounds.isMuted);
+  const [isFullscreen, setIsFullscreen] = useState(false);
 
   const handleToggleSound = () => {
     const muted = sounds.toggleMute();
     setIsMuted(muted);
   };
+
+  const toggleFullscreen = () => {
+    if (!document.fullscreenElement) {
+      document.documentElement.requestFullscreen().then(() => {
+        setIsFullscreen(true);
+      }).catch(() => {});
+    } else {
+      if (document.exitFullscreen) {
+        document.exitFullscreen().then(() => {
+          setIsFullscreen(false);
+        }).catch(() => {});
+      }
+    }
+  };
+
+  useEffect(() => {
+    const handleFsChange = () => {
+      setIsFullscreen(Boolean(document.fullscreenElement));
+    };
+    document.addEventListener('fullscreenchange', handleFsChange);
+    return () => document.removeEventListener('fullscreenchange', handleFsChange);
+  }, []);
 
   // Placed items in respective zones
   const totalPlaced = Object.values(itemLocations).filter(Boolean).length;
@@ -206,10 +229,10 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen w-full bg-black flex items-center justify-center select-none overflow-auto">
-      {/* Game Stage Frame 1280x832 using PzlGameBg.jpg as the full background */}
+    <div className="fixed inset-0 w-screen h-screen overflow-hidden select-none bg-black">
+      {/* Full-Screen Game Stage using PzlGameBg.jpg filling the whole screen with zero borders */}
       <div
-        className="relative w-full max-w-[1280px] aspect-[1280/832] overflow-hidden select-none"
+        className="relative w-full h-full overflow-hidden select-none"
         style={{
           backgroundImage: "url('/assets/clean/pzlgamebg.jpg')",
           backgroundSize: '100% 100%',
@@ -217,8 +240,9 @@ export default function App() {
           backgroundPosition: 'center',
         }}
       >
-        {/* Top Sound Toggle */}
-        <div className="absolute top-[3%] left-[17%] z-40">
+        {/* Top Control Buttons (Sound & Fullscreen Toggle) */}
+        <div className="absolute top-[3%] left-[17%] z-40 flex items-center gap-2">
+          {/* Sound Toggle */}
           <button
             onClick={handleToggleSound}
             title={isMuted ? 'Unmute Sound' : 'Mute Sound'}
@@ -228,6 +252,19 @@ export default function App() {
               <VolumeX className="w-5 h-5 sm:w-6 sm:h-6" />
             ) : (
               <Volume2 className="w-5 h-5 sm:w-6 sm:h-6 text-amber-950" />
+            )}
+          </button>
+
+          {/* Fullscreen Toggle */}
+          <button
+            onClick={toggleFullscreen}
+            title={isFullscreen ? 'Exit Full Screen' : 'Go Full Screen'}
+            className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-indigo-600 hover:bg-indigo-500 text-white flex items-center justify-center border-2 border-white shadow transition transform active:scale-90 cursor-pointer"
+          >
+            {isFullscreen ? (
+              <Minimize2 className="w-5 h-5 sm:w-6 sm:h-6" />
+            ) : (
+              <Maximize2 className="w-5 h-5 sm:w-6 sm:h-6" />
             )}
           </button>
         </div>
@@ -272,7 +309,7 @@ export default function App() {
           />
         </div>
 
-        {/* --- Drop Target Zones Over the Landscape Card inside PzlGameBg.jpg --- */}
+        {/* --- Drop Target Zones Over the Central Landscape Card inside PzlGameBg.jpg --- */}
         <div
           className="absolute z-20 pointer-events-auto rounded-3xl overflow-hidden"
           style={{
@@ -282,36 +319,39 @@ export default function App() {
             height: '65.6%',
           }}
         >
-          {/* 1. AIR / SKY Zone (Top 38% of the central card) */}
+          {/* 1. TOP ZONE: AIR / SKY (Top 36% of the central card) */}
           <EnvironmentZone
             type="air"
             title="Air"
+            icon="☁️"
             onDropItem={handleDropItem}
             activeItem={activeItem}
             isTouchHovered={touchHoverZone === 'air'}
-            style={{ top: '0%', height: '38%', left: '0%', width: '100%' }}
+            style={{ top: '0%', height: '36%', left: '0%', width: '100%' }}
             className="absolute z-10 rounded-t-3xl"
           />
 
-          {/* 2. RIVER / WATER Zone (Middle 28% of the central card) */}
+          {/* 2. MIDDLE ZONE: RIVER (Middle 25% of the central card) */}
           <EnvironmentZone
             type="river"
             title="River"
+            icon="🌊"
             onDropItem={handleDropItem}
             activeItem={activeItem}
             isTouchHovered={touchHoverZone === 'river'}
-            style={{ top: '38%', height: '28%', left: '0%', width: '100%' }}
+            style={{ top: '36%', height: '25%', left: '0%', width: '100%' }}
             className="absolute z-10"
           />
 
-          {/* 3. ROAD / BRIDGE Zone (Bottom 34% of the central card) */}
+          {/* 3. BOTTOM ZONE: ROAD (Bottom 39% of the central card) */}
           <EnvironmentZone
             type="road"
             title="Road"
+            icon="🛣️"
             onDropItem={handleDropItem}
             activeItem={activeItem}
             isTouchHovered={touchHoverZone === 'road'}
-            style={{ top: '66%', height: '34%', left: '0%', width: '100%' }}
+            style={{ top: '61%', height: '39%', left: '0%', width: '100%' }}
             className="absolute z-10 rounded-b-3xl"
           />
 
