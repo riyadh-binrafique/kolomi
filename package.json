@@ -3,15 +3,15 @@
   "private": true,
   "version": "1.0.0",
   "workspaces": [
-    "healthy-game",
-    "game-2"
+    "food",
+    "transport"
   ],
   "scripts": {
-    "dev": "npm run dev --workspace=healthy-game",
-    "dev:healthy": "npm run dev --workspace=healthy-game",
-    "dev:game2": "npm run dev --workspace=game-2",
-    "build:healthy": "npm run build --workspace=healthy-game",
-    "build:game2": "npm run build --workspace=game-2",
+    "dev": "npm run dev --workspace=food",
+    "dev:food": "npm run dev --workspace=food",
+    "dev:transport": "npm run dev --workspace=transport",
+    "build:food": "npm run build --workspace=food",
+    "build:transport": "npm run build --workspace=transport",
     "build": "npm run build --workspaces"
   }
 }

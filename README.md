@@ -4,14 +4,14 @@ This repository contains educational games for children:
 
 ## Game Folders
 
-- [healthy-game/](file:///Users/riyadhmac/Documents/GitHub/kolomi/healthy-game): **Healthy vs Unhealthy**
+- [food/](file:///Users/riyadhmac/Documents/GitHub/kolomi/food): **Healthy vs Unhealthy Food Game**
   - Interactive drag-and-drop / tap-to-move food sorting game.
   - Features real-time live scoring, sound effects, confetti, and level completion modals with dedicated 3D stars.
   - Frame aspect ratio: 1280×832.
 
-- [game-2/](file:///Users/riyadhmac/Documents/GitHub/kolomi/game-2): **Game 2 (Template / Workspace)**
-  - Standalone scaffold ready for the next game.
-  - Add assets into `game-2/materials/` or `game-2/public/` and build gameplay inside `game-2/src/`.
+- [transport/](file:///Users/riyadhmac/Documents/GitHub/kolomi/transport): **Transport Game (Workspace)**
+  - Standalone scaffold ready for the transport educational game.
+  - Add assets into `transport/materials/` or `transport/public/` and build gameplay inside `transport/src/`.
 
 ---
 
@@ -19,23 +19,23 @@ This repository contains educational games for children:
 
 ### Option 1: From Repository Root
 ```bash
-# Run Healthy Game (Default)
+# Run Food Game (Default)
 npm run dev
 
 # Or explicitly:
-npm run dev:healthy
+npm run dev:food
 
-# Run Game 2
-npm run dev:game2
+# Run Transport Game
+npm run dev:transport
 ```
 
 ### Option 2: Inside Each Folder
 ```bash
-# Healthy Game
-cd healthy-game
+# Food Game
+cd food
 npm run dev
 
-# Game 2
-cd game-2
+# Transport Game
+cd transport
 npm run dev
 ```

@@ -1,6 +1,6 @@
-# Game 2 - Kolomi
+# Transport Game - Kolomi
 
-This is a standalone game folder ready for development.
+This is the standalone workspace for the Transport educational game.
 
 ## Getting Started
 

@@ -8,7 +8,7 @@ export default function App() {
           Kolomi Games
         </div>
         <h1 className="text-4xl md:text-6xl font-black text-white font-lilita drop-shadow-lg mb-4">
-          Game 2 Workspace
+          Transport Game Workspace
         </h1>
         <p className="text-base md:text-xl text-white/80 max-w-lg mb-8">
           This standalone folder is ready for your next educational game. Add your assets into <code className="bg-black/40 px-2 py-1 rounded text-amber-300">materials/</code> and start building in <code className="bg-black/40 px-2 py-1 rounded text-amber-300">src/</code>!
