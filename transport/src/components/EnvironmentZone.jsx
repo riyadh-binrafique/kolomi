@@ -90,13 +90,13 @@ export default function EnvironmentZone({
       return                               { left: '38%', top: '14%', width: '20%' };
     }
 
-    // 3. Road Zone (Lower 26%: road/bridge — bike left, car center-right)
+    // 3. Road Zone (Lower 36%: road/bridge — bike left, car center-right)
     if (type === 'road') {
-      if (item.id === 'bike')       return { left: '10%', top: '16%', width: '17%' };
-      if (item.id === 'car')        return { left: '36%', top: '22%', width: '22%' };
-      if (item.id === 'helicopter') return { left: '15%', top: '16%', width: '18%' };
-      if (item.id === 'plane')      return { left: '52%', top: '16%', width: '22%' };
-      return                               { left: '26%', top: '16%', width: '18%' };
+      if (item.id === 'bike')       return { left: '10%', top: '32%', width: '17%' };
+      if (item.id === 'car')        return { left: '38%', top: '40%', width: '22%' };
+      if (item.id === 'helicopter') return { left: '15%', top: '30%', width: '18%' };
+      if (item.id === 'plane')      return { left: '52%', top: '30%', width: '22%' };
+      return                               { left: '26%', top: '30%', width: '18%' };
     }
 
     return { left: '20%', top: '20%', width: '18%' };

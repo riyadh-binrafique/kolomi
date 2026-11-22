@@ -323,7 +323,7 @@ export default function App() {
             height: '66.91%',
           }}
         >
-          {/* Part 1 (Upper 47%): Sky — holds Plane & Helicopter */}
+          {/* Part 1 (Upper 37%): Sky — holds Plane & Helicopter */}
           <EnvironmentZone
             type="air"
             title="Sky"
@@ -333,7 +333,7 @@ export default function App() {
             onRemoveItem={handleRemoveItem}
             activeItem={activeItem}
             isTouchHovered={touchHoverZone === 'air'}
-            style={{ top: '0%', height: '47%', left: '0%', width: '100%' }}
+            style={{ top: '0%', height: '37%', left: '0%', width: '100%' }}
             className="absolute z-10 rounded-t-2xl"
             borderColor="#e53e3e"
             labelColor="#ef4444"
@@ -349,13 +349,13 @@ export default function App() {
             onRemoveItem={handleRemoveItem}
             activeItem={activeItem}
             isTouchHovered={touchHoverZone === 'river'}
-            style={{ top: '47%', height: '27%', left: '0%', width: '100%' }}
+            style={{ top: '37%', height: '27%', left: '0%', width: '100%' }}
             className="absolute z-10"
             borderColor="#18181b"
             labelColor="#ef4444"
           />
 
-          {/* Part 3 (Lower 26%): Road — holds Bike & Car */}
+          {/* Part 3 (Lower 36%): Road — holds Bike & Car */}
           <EnvironmentZone
             type="road"
             title="road"
@@ -365,7 +365,7 @@ export default function App() {
             onRemoveItem={handleRemoveItem}
             activeItem={activeItem}
             isTouchHovered={touchHoverZone === 'road'}
-            style={{ top: '74%', height: '26%', left: '0%', width: '100%' }}
+            style={{ top: '64%', height: '36%', left: '0%', width: '100%' }}
             className="absolute z-10 rounded-b-2xl"
             borderColor="#22c55e"
             labelColor="#ef4444"
