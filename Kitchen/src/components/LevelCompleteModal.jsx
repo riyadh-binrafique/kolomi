@@ -12,19 +12,32 @@ export default function LevelCompleteModal({ stars = 3, coins = 40, onNext }) {
     }
   }, []);
 
+  // Star display logic:
+  // 1 star: Center star (main star)
+  // 2 stars: Center + Left stars
+  // 3 stars: Center + Left + Right stars
+  const showCenter = stars >= 1;
+  const showLeft = stars >= 2;
+  const showRight = stars >= 3;
+
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-pop-in select-none">
-      {/* Modal Dialog using reference asset: sg_panel.png (786 x 952) */}
-      <div className="relative w-full max-w-[340px] sm:max-w-[390px] aspect-[786/952] drop-shadow-[0_20px_35px_rgba(0,0,0,0.6)]">
-        {/* Panel Artwork */}
+      {/* Modal Dialog using reference asset: sg_panel.png (786 x 952) matching Screenshot 4 */}
+      <div className="relative w-full max-w-[320px] sm:max-w-[380px] aspect-[786/952] drop-shadow-[0_20px_35px_rgba(0,0,0,0.6)]">
+        {/* Panel Artwork from materials/sg.png */}
         <img
-          src="/assets/clean/sg_panel.png"
+          src="/assets/sg_panel.png"
+          onError={(e) => {
+            e.currentTarget.src = '/assets/clean/sg_panel.png';
+          }}
           alt="Level Complete Panel"
           className="w-full h-full object-contain pointer-events-none select-none"
         />
 
-        {/* --- Gold Stars placed precisely over dedicated silhouette spaces --- */}
-        {stars >= 1 && (
+        {/* --- Gold Stars placed precisely over the dedicated silhouette spaces in sg.png --- */}
+
+        {/* Star 1 (Left Dedicated Space) */}
+        {showLeft && (
           <div
             className="absolute z-20 pointer-events-none animate-star-pop"
             style={{
@@ -35,14 +48,18 @@ export default function LevelCompleteModal({ stars = 3, coins = 40, onNext }) {
             }}
           >
             <img
-              src="/assets/clean/star.png"
+              src="/assets/star.png"
+              onError={(e) => {
+                e.currentTarget.src = '/assets/clean/star.png';
+              }}
               alt="Star 1"
               className="w-full h-auto object-contain drop-shadow-[0_4px_8px_rgba(0,0,0,0.35)]"
             />
           </div>
         )}
 
-        {stars >= 2 && (
+        {/* Star 2 (Center Dedicated Space - Main / Highest) */}
+        {showCenter && (
           <div
             className="absolute z-30 pointer-events-none animate-star-pop"
             style={{
@@ -53,14 +70,18 @@ export default function LevelCompleteModal({ stars = 3, coins = 40, onNext }) {
             }}
           >
             <img
-              src="/assets/clean/star.png"
+              src="/assets/star.png"
+              onError={(e) => {
+                e.currentTarget.src = '/assets/clean/star.png';
+              }}
               alt="Star 2"
               className="w-full h-auto object-contain drop-shadow-[0_6px_12px_rgba(0,0,0,0.4)]"
             />
           </div>
         )}
 
-        {stars >= 3 && (
+        {/* Star 3 (Right Dedicated Space) */}
+        {showRight && (
           <div
             className="absolute z-20 pointer-events-none animate-star-pop"
             style={{
@@ -71,7 +92,10 @@ export default function LevelCompleteModal({ stars = 3, coins = 40, onNext }) {
             }}
           >
             <img
-              src="/assets/clean/star.png"
+              src="/assets/star.png"
+              onError={(e) => {
+                e.currentTarget.src = '/assets/clean/star.png';
+              }}
               alt="Star 3"
               className="w-full h-auto object-contain drop-shadow-[0_4px_8px_rgba(0,0,0,0.35)]"
             />
