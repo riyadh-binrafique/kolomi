@@ -18,13 +18,16 @@ export default function RetryModal({ onRetry }) {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-pop-in select-none">
-      <div className="relative w-full max-w-[310px] sm:max-w-[350px] aspect-[415/495] drop-shadow-[0_20px_35px_rgba(0,0,0,0.6)] flex flex-col items-center justify-between p-6">
+      {/* Modal Dialog using reference asset: solidBg.png (416 x 497) */}
+      <div className="relative w-full max-w-[310px] sm:max-w-[350px] aspect-[416/497] drop-shadow-[0_20px_35px_rgba(0,0,0,0.6)] flex flex-col items-center justify-between p-6">
+        {/* Background Card Artwork matching Screenshot 2 */}
         <img
           src="/assets/solidBg.png"
           alt="Retry Background Panel"
           className="absolute inset-0 w-full h-full object-contain pointer-events-none select-none"
         />
 
+        {/* Text Area (Upper Half matching Screenshot 2) */}
         <div className="relative z-20 text-center text-white mt-12 sm:mt-14 space-y-1">
           <h2
             className="text-2xl sm:text-3xl font-extrabold tracking-wide"
@@ -46,11 +49,12 @@ export default function RetryModal({ onRetry }) {
           </p>
         </div>
 
-        <div className="relative z-20 mb-8 sm:mb-10">
+        {/* Retry Button Area (Lower Half matching Screenshot 2) */}
+        <div className="relative z-20 mb-8 sm:mb-10 flex items-center justify-center">
           <button
             onClick={handleRetryClick}
             title="Retry Level"
-            className="w-18 h-18 sm:w-20 sm:h-20 transition-transform duration-200 hover:scale-108 active:scale-95 cursor-pointer focus:outline-none"
+            className="w-16 h-16 sm:w-20 sm:h-20 transition-transform duration-200 hover:scale-110 active:scale-95 cursor-pointer focus:outline-none flex items-center justify-center"
           >
             <img
               src="/assets/retry.png"
