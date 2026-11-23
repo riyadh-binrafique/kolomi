@@ -4,14 +4,17 @@
   "version": "1.0.0",
   "workspaces": [
     "food",
-    "transport"
+    "transport",
+    "Animals"
   ],
   "scripts": {
     "dev": "npm run dev --workspace=food",
     "dev:food": "npm run dev --workspace=food",
     "dev:transport": "npm run dev --workspace=transport",
+    "dev:animals": "npm run dev --workspace=Animals",
     "build:food": "npm run build --workspace=food",
     "build:transport": "npm run build --workspace=transport",
+    "build:animals": "npm run build --workspace=Animals",
     "build": "npm run build --workspaces"
   }
 }
