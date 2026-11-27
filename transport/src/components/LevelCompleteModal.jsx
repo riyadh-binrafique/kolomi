@@ -5,16 +5,23 @@ import { sounds } from '../utils/sound';
 export default function LevelCompleteModal({ stars = 3, coins = 40, onNext }) {
   useEffect(() => {
     sounds.playWin();
-    fireVictoryConfetti();
+    try {
+      fireVictoryConfetti();
+    } catch (e) {
+      console.warn('Confetti error', e);
+    }
   }, []);
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-pop-in select-none">
       {/* Modal Dialog using reference asset: sg_panel.png (786 x 952) */}
       <div className="relative w-full max-w-[340px] sm:max-w-[390px] aspect-[786/952] drop-shadow-[0_20px_35px_rgba(0,0,0,0.6)]">
-        {/* Panel Artwork from materials/sg.png */}
+        {/* Panel Artwork */}
         <img
           src="/assets/clean/sg_panel.png"
+          onError={(e) => {
+            e.currentTarget.src = '/assets/sg_panel.png';
+          }}
           alt="Level Complete Panel"
           className="w-full h-full object-contain pointer-events-none select-none"
         />
@@ -35,6 +42,9 @@ export default function LevelCompleteModal({ stars = 3, coins = 40, onNext }) {
           >
             <img
               src="/assets/clean/star.png"
+              onError={(e) => {
+                e.currentTarget.src = '/assets/star.png';
+              }}
               alt="Star 1"
               className="w-full h-auto object-contain drop-shadow-[0_4px_8px_rgba(0,0,0,0.35)]"
             />
@@ -55,6 +65,9 @@ export default function LevelCompleteModal({ stars = 3, coins = 40, onNext }) {
           >
             <img
               src="/assets/clean/star.png"
+              onError={(e) => {
+                e.currentTarget.src = '/assets/star.png';
+              }}
               alt="Star 2"
               className="w-full h-auto object-contain drop-shadow-[0_6px_12px_rgba(0,0,0,0.4)]"
             />
@@ -75,6 +88,9 @@ export default function LevelCompleteModal({ stars = 3, coins = 40, onNext }) {
           >
             <img
               src="/assets/clean/star.png"
+              onError={(e) => {
+                e.currentTarget.src = '/assets/star.png';
+              }}
               alt="Star 3"
               className="w-full h-auto object-contain drop-shadow-[0_4px_8px_rgba(0,0,0,0.35)]"
             />

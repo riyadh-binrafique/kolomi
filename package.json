@@ -10,9 +10,9 @@
   ],
   "scripts": {
     "dev": "npm run dev --workspace=food",
-    "dev:food": "npm run dev --workspace=food",
-    "dev:transport": "npm run dev --workspace=transport",
-    "dev:animals": "npm run dev --workspace=Animals",
+    "dev:food": "npm run dev --workspace=food -- --host 127.0.0.1 --port 5173",
+    "dev:transport": "npm run dev --workspace=transport -- --host 127.0.0.1 --port 5174",
+    "dev:animals": "npm run dev --workspace=Animals -- --host 127.0.0.1 --port 5175",
     "dev:kitchen": "npm run dev --workspace=Kitchen -- --host 127.0.0.1 --port 5176",
     "build:food": "npm run build --workspace=food",
     "build:transport": "npm run build --workspace=transport",

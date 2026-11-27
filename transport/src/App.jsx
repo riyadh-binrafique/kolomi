@@ -14,65 +14,35 @@ const INITIAL_VEHICLES = [
     name: 'Helicopter',
     type: 'air',
     image: '/assets/clean/helicopter.png',
-    unplacedStyle: { left: '4.5%', top: '44%', width: '10%' },
-    placedPosStyle: {
-      air: { left: '20%', top: '10%', width: '15.5%' },
-      river: { left: '20%', top: '42%', width: '15.5%' },
-      road: { left: '20%', top: '74%', width: '15.5%' },
-      default: { left: '20%', top: '10%', width: '15.5%' },
-    },
+    unplacedStyle: { left: '4.5%', top: '38%', width: '11%' },
   },
   {
     id: 'car',
     name: 'Car',
     type: 'road',
     image: '/assets/clean/car.png',
-    unplacedStyle: { left: '4.5%', top: '68%', width: '11.5%' },
-    placedPosStyle: {
-      road: { left: '33%', top: '76%', width: '18%' },
-      air: { left: '33%', top: '10%', width: '18%' },
-      river: { left: '33%', top: '42%', width: '18%' },
-      default: { left: '33%', top: '76%', width: '18%' },
-    },
-  },
-  {
-    id: 'ship',
-    name: 'Ship',
-    type: 'river',
-    image: '/assets/clean/ship.png',
-    unplacedStyle: { right: '4.5%', top: '23%', width: '10%' },
-    placedPosStyle: {
-      river: { left: '23%', top: '42%', width: '15.5%' },
-      air: { left: '23%', top: '10%', width: '15.5%' },
-      road: { left: '23%', top: '74%', width: '15.5%' },
-      default: { left: '23%', top: '42%', width: '15.5%' },
-    },
+    unplacedStyle: { left: '4.5%', top: '64%', width: '12%' },
   },
   {
     id: 'plane',
     name: 'Airplane',
     type: 'air',
     image: '/assets/clean/plane.png',
-    unplacedStyle: { right: '4.5%', top: '43%', width: '10%' },
-    placedPosStyle: {
-      air: { left: '48%', top: '6%', width: '17.5%' },
-      river: { left: '48%', top: '42%', width: '17.5%' },
-      road: { left: '48%', top: '74%', width: '17.5%' },
-      default: { left: '48%', top: '6%', width: '17.5%' },
-    },
+    unplacedStyle: { right: '4.5%', top: '19%', width: '11%' },
+  },
+  {
+    id: 'ship',
+    name: 'Ship',
+    type: 'river',
+    image: '/assets/clean/ship.png',
+    unplacedStyle: { right: '4.5%', top: '42%', width: '11%' },
   },
   {
     id: 'bike',
     name: 'Motorcycle',
     type: 'road',
     image: '/assets/clean/bike.png',
-    unplacedStyle: { right: '4.5%', top: '66%', width: '9.5%' },
-    placedPosStyle: {
-      road: { left: '10%', top: '73%', width: '14.5%' },
-      air: { left: '10%', top: '10%', width: '14.5%' },
-      river: { left: '10%', top: '42%', width: '14.5%' },
-      default: { left: '10%', top: '73%', width: '14.5%' },
-    },
+    unplacedStyle: { right: '4.5%', top: '65%', width: '10%' },
   },
 ];
 
@@ -104,14 +74,15 @@ export default function App() {
 
   const toggleFullscreen = () => {
     if (!document.fullscreenElement) {
-      document.documentElement.requestFullscreen().then(() => {
-        setIsFullscreen(true);
-      }).catch(() => { });
+      document.documentElement
+        .requestFullscreen()
+        .then(() => setIsFullscreen(true))
+        .catch(() => {});
     } else {
       if (document.exitFullscreen) {
-        document.exitFullscreen().then(() => {
-          setIsFullscreen(false);
-        }).catch(() => { });
+        document.exitFullscreen()
+          .then(() => setIsFullscreen(false))
+          .catch(() => {});
       }
     }
   };
@@ -134,7 +105,7 @@ export default function App() {
   const activeItem =
     draggedItem || INITIAL_VEHICLES.find((i) => i.id === selectedItemId) || null;
 
-  // --- Real-time Dynamic Counting of Right, Wrong, and Score! ---
+  // Real-time counting of right, wrong, and score
   const { rightCount, wrongCount, liveScore } = useMemo(() => {
     let right = 0;
     let wrong = 0;
@@ -190,7 +161,7 @@ export default function App() {
     setSelectedItemId((prev) => (prev === itemId ? null : itemId));
   };
 
-  // --- Automatic Modal Trigger When All 5 Vehicles are Placed ---
+  // Automatic Modal Trigger When All 5 Vehicles are Placed
   useEffect(() => {
     if (totalPlaced === INITIAL_VEHICLES.length && gameState === 'playing') {
       const timer = setTimeout(() => {
@@ -211,7 +182,7 @@ export default function App() {
           setResultCoins(0);
           setGameState('retry');
         }
-      }, 900);
+      }, 850);
 
       return () => clearTimeout(timer);
     }
@@ -233,7 +204,7 @@ export default function App() {
 
   return (
     <div className="fixed inset-0 w-screen h-screen overflow-hidden select-none bg-black">
-      {/* Full-Screen Game Stage using PzlGameBg.jpg filling the whole screen with zero borders */}
+      {/* Full-Screen Game Stage using PzlGameBg.jpg filling the whole screen */}
       <div
         className="relative w-full h-full overflow-hidden select-none"
         style={{
@@ -282,7 +253,7 @@ export default function App() {
           </div>
         </div>
 
-        {/* Top Right Exit Button: Exit.png */}
+        {/* Top Right Exit Button */}
         <div className="absolute top-[2.5%] right-[2.5%] z-40">
           <button
             onClick={() => {
@@ -294,6 +265,9 @@ export default function App() {
           >
             <img
               src="/assets/clean/exit.png"
+              onError={(e) => {
+                e.currentTarget.src = '/assets/exit.png';
+              }}
               alt="Exit"
               className="w-11 h-9 sm:w-14 sm:h-11 object-contain filter drop-shadow-[0_3px_5px_rgba(0,0,0,0.3)]"
             />
@@ -312,10 +286,9 @@ export default function App() {
           />
         </div>
 
-        {/* --- The Holding Place (3 Parts for holding 3 types of vehicles) --- */}
-        {/* NOTE: NO overflow-hidden so Road zone badge is never clipped */}
+        {/* --- The Central Landscape divided into 3 Environment Parts --- */}
         <div
-          className="absolute z-20 pointer-events-auto rounded-3xl"
+          className="absolute z-20 pointer-events-auto rounded-3xl overflow-hidden shadow-2xl flex flex-col border-2 border-white/30"
           style={{
             left: '21.82%',
             top: '16.73%',
@@ -323,52 +296,46 @@ export default function App() {
             height: '66.91%',
           }}
         >
-          {/* Part 1 (Upper 37%): Sky — holds Plane & Helicopter */}
+          {/* 1. Upper Part: Air Zone (holds Airplane & Helicopter) */}
           <EnvironmentZone
             type="air"
-            title="Sky"
-            icon=""
+            title="Air"
+            icon="☁️"
             items={airItems}
             onDropItem={handleDropItem}
             onRemoveItem={handleRemoveItem}
             activeItem={activeItem}
             isTouchHovered={touchHoverZone === 'air'}
-            style={{ top: '0%', height: '37%', left: '0%', width: '100%' }}
-            className="absolute z-10 rounded-t-2xl"
-            borderColor="#e53e3e"
-            labelColor="#ef4444"
+            style={{ height: '38%' }}
+            className="border-b-2 border-dashed border-white/35"
           />
 
-          {/* Part 2 (Middle 27%): Water — holds Ship */}
+          {/* 2. Middle Part: River Zone (holds Ship) */}
           <EnvironmentZone
             type="river"
-            title="Water"
-            icon=""
+            title="River"
+            icon="🌊"
             items={riverItems}
             onDropItem={handleDropItem}
             onRemoveItem={handleRemoveItem}
             activeItem={activeItem}
             isTouchHovered={touchHoverZone === 'river'}
-            style={{ top: '37%', height: '27%', left: '0%', width: '100%' }}
-            className="absolute z-10"
-            borderColor="#18181b"
-            labelColor="#ef4444"
+            style={{ height: '27%' }}
+            className="border-b-2 border-dashed border-white/35"
           />
 
-          {/* Part 3 (Lower 36%): Road — holds Bike & Car */}
+          {/* 3. Lower Part: Road Zone (holds Motorcycle & Car) */}
           <EnvironmentZone
             type="road"
-            title="road"
-            icon=""
+            title="Road"
+            icon="🛣️"
             items={roadItems}
             onDropItem={handleDropItem}
             onRemoveItem={handleRemoveItem}
             activeItem={activeItem}
             isTouchHovered={touchHoverZone === 'road'}
-            style={{ top: '64%', height: '36%', left: '0%', width: '100%' }}
-            className="absolute z-10 rounded-b-2xl"
-            borderColor="#22c55e"
-            labelColor="#ef4444"
+            style={{ height: '35%' }}
+            className=""
           />
         </div>
 
@@ -407,8 +374,8 @@ export default function App() {
         })}
 
         {/* Footer instruction text */}
-        <div className="absolute bottom-2 left-0 right-0 text-center text-xs text-white/50 pointer-events-none select-none">
-          Drag vehicles into Air, River, or Road • Tap to select & place
+        <div className="absolute bottom-2 left-0 right-0 text-center text-xs sm:text-sm text-white/60 pointer-events-none select-none font-semibold">
+          Drag vehicles into Air, River, or Road • Or tap a vehicle then tap a zone to place
         </div>
 
         {/* --- Victory / Level Complete Modal --- */}

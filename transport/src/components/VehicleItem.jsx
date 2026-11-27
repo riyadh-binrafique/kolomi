@@ -4,6 +4,7 @@ import { sounds } from '../utils/sound';
 export default function VehicleItem({
   item,
   isPlaced = false,
+  isCorrect = true,
   isSelected = false,
   onSelect,
   onRemove,
@@ -85,23 +86,42 @@ export default function VehicleItem({
       onTouchMove={handleTouchMove}
       onTouchEnd={handleTouchEnd}
       onClick={handleClick}
-      title={`${item.name} (${isPlaced ? 'Click to remove' : 'Drag or click to place'})`}
+      title={`${item.name} (${isPlaced ? 'Tap to remove or relocate' : 'Drag or tap to place'})`}
       style={style}
-      className={`group cursor-grab active:cursor-grabbing select-none transition-transform duration-200 transform hover:scale-108 ${
+      className={`group cursor-grab active:cursor-grabbing select-none transition-all duration-200 transform hover:scale-108 ${
         isSelected
           ? 'scale-110 drop-shadow-[0_0_18px_rgba(250,204,21,0.95)] ring-4 ring-yellow-400 rounded-2xl animate-pulse'
+          : isPlaced && !isCorrect
+          ? 'drop-shadow-[0_0_12px_rgba(239,68,68,0.85)] ring-2 ring-red-400 rounded-2xl'
           : 'drop-shadow-[0_6px_12px_rgba(0,0,0,0.45)]'
       } ${className}`}
     >
       <img
         src={item.image}
         alt={item.name}
+        onError={(e) => {
+          if (item.id === 'car') {
+            e.currentTarget.src = '/assets/clean/ca.png';
+          } else if (item.id === 'helicopter') {
+            e.currentTarget.src = '/assets/clean/hell.png';
+          } else {
+            e.currentTarget.src = `/assets/${item.id}.png`;
+          }
+        }}
         draggable={false}
         className="w-full h-full object-contain pointer-events-none select-none transition-transform duration-200"
       />
       {isSelected && (
         <span className="absolute -top-3 -right-3 bg-yellow-400 text-slate-950 text-xs font-black rounded-full w-6 h-6 flex items-center justify-center border-2 border-white shadow-lg animate-bounce">
           ✓
+        </span>
+      )}
+      {isPlaced && !isCorrect && (
+        <span
+          className="absolute -top-2 -right-2 bg-rose-500 text-white text-[11px] font-black rounded-full w-5 h-5 flex items-center justify-center border border-white shadow-md"
+          title="Wrong environment! Tap to remove."
+        >
+          ✕
         </span>
       )}
     </div>

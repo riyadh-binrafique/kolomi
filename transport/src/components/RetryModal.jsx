@@ -19,15 +19,18 @@ export default function RetryModal({ onRetry }) {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-pop-in select-none">
       {/* Modal Dialog using reference asset: solidBg_panel.png */}
-      <div className="relative w-full max-w-[310px] sm:max-w-[350px] aspect-[415/495] drop-shadow-[0_20px_35px_rgba(0,0,0,0.6)] flex flex-col items-center justify-between p-6">
-        {/* Background Card Artwork from materials/solidBg.png */}
+      <div className="relative w-full max-w-[310px] sm:max-w-[350px] aspect-[416/497] drop-shadow-[0_20px_35px_rgba(0,0,0,0.6)] flex flex-col items-center justify-between p-6">
+        {/* Background Card Artwork */}
         <img
           src="/assets/clean/solidBg_panel.png"
+          onError={(e) => {
+            e.currentTarget.src = '/assets/solidBg.png';
+          }}
           alt="Retry Background Panel"
           className="absolute inset-0 w-full h-full object-contain pointer-events-none select-none"
         />
 
-        {/* Text Area (Upper Half matching Image 4) */}
+        {/* Text Area */}
         <div className="relative z-20 text-center text-white mt-12 sm:mt-14 space-y-1">
           <h2
             className="text-2xl sm:text-3xl font-extrabold tracking-wide"
@@ -49,15 +52,18 @@ export default function RetryModal({ onRetry }) {
           </p>
         </div>
 
-        {/* Retry Button Area (Lower Half matching Image 4) */}
+        {/* Retry Button Area */}
         <div className="relative z-20 mb-8 sm:mb-10">
           <button
             onClick={handleRetryClick}
             title="Retry Level"
-            className="w-18 h-18 sm:w-20 sm:h-20 transition-transform duration-200 hover:scale-108 active:scale-95 cursor-pointer focus:outline-none"
+            className="w-18 h-18 sm:w-20 sm:h-20 transition-transform duration-200 hover:scale-110 active:scale-95 cursor-pointer focus:outline-none"
           >
             <img
               src="/assets/clean/retry_btn.png"
+              onError={(e) => {
+                e.currentTarget.src = '/assets/retry.png';
+              }}
               alt="Retry Button"
               className={`w-full h-full object-contain drop-shadow-[0_4px_8px_rgba(0,0,0,0.4)] transition-transform duration-500 ${
                 isSpinning ? 'rotate-180' : ''

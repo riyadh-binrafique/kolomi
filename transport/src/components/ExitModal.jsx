@@ -4,10 +4,12 @@ import { sounds } from '../utils/sound';
 export default function ExitModal({ onConfirmRestart, onClose }) {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-pop-in select-none">
-      <div className="relative w-full max-w-[310px] sm:max-w-[350px] aspect-[415/495] drop-shadow-[0_20px_35px_rgba(0,0,0,0.6)] flex flex-col items-center justify-between p-6">
-        {/* Background Card Artwork from materials/solidBg.png */}
+      <div className="relative w-full max-w-[310px] sm:max-w-[350px] aspect-[416/497] drop-shadow-[0_20px_35px_rgba(0,0,0,0.6)] flex flex-col items-center justify-between p-6">
         <img
           src="/assets/clean/solidBg_panel.png"
+          onError={(e) => {
+            e.currentTarget.src = '/assets/solidBg.png';
+          }}
           alt="Exit Modal Panel"
           className="absolute inset-0 w-full h-full object-contain pointer-events-none select-none"
         />
